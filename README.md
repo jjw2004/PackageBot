@@ -1,4 +1,4 @@
-# PackageBot 🤖
+# PackageBot 
 
 A D## 🛠️ Built With
 
@@ -6,17 +6,17 @@ A D## 🛠️ Built With
 - **discord.py** - Discord API wrapper
 - **python-dotenv** - Environment variable management
 
-## 📋 Project Status
+## Project Status
 
 This is a personal learning project - feel free to look at the code and learn from it!d bot built with Python and discord.py - my student project for learning bot development!
 
 ![Bot Avatar](PackageBot-pfp.png)
 
-## ✨ About This Project
+## About This Project
 
 This is a student project where I'm learning how to create Discord bots using Python. It's a work in progress and I'll be adding more features as I learn!
 
-## 🎮 Current Commands
+## Current Commands
 
 | Command | Description | Usage |
 |---------|-------------|--------|
@@ -26,13 +26,13 @@ This is a student project where I'm learning how to create Discord bots using Py
 | `!say` | Makes the bot repeat a message | `!say Hello World!` |
 | `!help` | Shows all available commands | `!help` |
 
-## �️ Built With
+##  Built With
 
 - **Python** - Programming language
 - **discord.py** - Discord API wrapper
 - **python-dotenv** - Environment variable management
 
-## 📚 What I'm Learning
+##  What I'm Learning
 
 - Discord bot development
 - Python async programming
@@ -40,15 +40,15 @@ This is a student project where I'm learning how to create Discord bots using Py
 - Environment configuration
 - Git and version control
 
-## � Future Plans
+## Future Plans
 
 *Space for my future ideas and features I want to add...*
 
-## � Project Notes
+## Project Notes
 
 *Space for documenting my learning process and challenges...*
 
-## 🤝 Resources I'm Using
+## Resources I'm Using
 
 - [Discord.py Documentation](https://discordpy.readthedocs.io/)
 - [Discord Developer Portal](https://discord.com/developers/applications)
