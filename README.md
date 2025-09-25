@@ -8,7 +8,7 @@ A D## 🛠️ Built With
 
 ## Project Status
 
-This is a personal learning project - feel free to look at the code and learn from it!d bot built with Python and discord.py - my student project for learning bot development!
+This is a personal learning project - feel free to look at the code and learn from it! bot built with Python and discord.py - my student project for learning bot development! The project will be updated as my project progresses, adding new commands and stuff like that. Right now I was just learning how to setup the discord bot and have a few basic commands
 
 ![Bot Avatar](PackageBot-pfp.png)
 
