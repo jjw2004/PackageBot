@@ -1,6 +1,14 @@
 # PackageBot 🤖
 
-A Discord bot built with Python and discord.py - my student project for learning bot development!
+A D## 🛠️ Built With
+
+- **Python** - Programming language
+- **discord.py** - Discord API wrapper
+- **python-dotenv** - Environment variable management
+
+## 📋 Project Status
+
+This is a personal learning project - feel free to look at the code and learn from it!d bot built with Python and discord.py - my student project for learning bot development!
 
 ![Bot Avatar](PackageBot-pfp.png)
 
