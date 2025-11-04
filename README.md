@@ -46,25 +46,8 @@ A smart package delivery monitoring system built with Python, Discord.py, and Ra
 
 ## 📦 Installation
 
-1. Clone the repository:
-```bash
-git clone https://github.com/jjw2004/PackageBot.git
-cd PackageBot
-```
+-Coming soon
 
-2. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-3. Set up your Discord bot token:
-   - Create a `.env` file based on `.env.example`
-   - Add your Discord bot token: `DISCORD_BOT_TOKEN=your_token_here`
-
-4. Run the bot:
-```bash
-python3 bot.py
-```
 
 ## 🎥 How It Works
 
@@ -105,14 +88,6 @@ This project combines:
 - ✅ Async video recording from multiple cameras
 - ✅ Enhanced Discord embeds with sensor data
 
-## 🔮 Future Plans
-
-- Add timestamp overlays on videos
-- Implement motion detection zones
-- Add notification cooldown configuration
-- Create web dashboard for viewing recordings
-- Add support for more sensor types
-
 ## 📚 Resources
 
 - [Discord.py Documentation](https://discordpy.readthedocs.io/)
@@ -134,4 +109,4 @@ Sensor pins:
 ---
 
 *Student Project - Fall 2025*
-*Built with 🤖 for learning IoT, computer vision, and bot development*
+*Built with 🤖 for learning IoT, computer vision, and bot development with discord client*
