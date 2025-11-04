@@ -3,3 +3,9 @@
 
 discord.py>=2.3.0
 python-dotenv>=1.0.0
+
+# Package Monitor Dependencies
+opencv-python
+requests
+seeed-python-dht
+grove.py

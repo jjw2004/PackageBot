@@ -15,7 +15,7 @@ class BotConfig:
     # Bot information
     BOT_NAME = "PackageBot"
     BOT_DESCRIPTION = "A Discord bot created with discord.py"
-    BOT_VERSION = "1.0.0"
+    BOT_VERSION = "2.0.0"
     
     # Colors (hex values)
     SUCCESS_COLOR = 0x00ff00
