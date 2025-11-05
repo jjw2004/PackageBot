@@ -235,6 +235,9 @@ async def testvideo(ctx):
                 try:
                     with open(path, 'rb') as f:
                         await ctx.send(f"✅ {camera_label} video:", file=discord.File(f, filename=os.path.basename(path)))
+                    # Delete video after successful upload
+                    os.remove(path)
+                    print(f"🗑️ Deleted {path} after upload")
                 except Exception as e:
                     await ctx.send(f"Failed to send {camera_label} video: {e}")
             else:
@@ -288,12 +291,18 @@ async def package_monitor():
                     embed.add_field(name='💧 Humidity', value=f"{data['humidity']}%", inline=True)
                     embed.add_field(name='🌧️ Weather', value=data['rain_status'], inline=True)
                     await ch.send(embed=embed)
-                    # Send both videos
+                    # Send both videos and delete after upload
                     if video_paths:
                         for camera_label, path in video_paths.items():
                             if os.path.exists(path):
-                                with open(path, 'rb') as f:
-                                    await ch.send(f"📹 {camera_label}:", file=discord.File(f, filename=os.path.basename(path)))
+                                try:
+                                    with open(path, 'rb') as f:
+                                        await ch.send(f"📹 {camera_label}:", file=discord.File(f, filename=os.path.basename(path)))
+                                    # Delete video after successful upload
+                                    os.remove(path)
+                                    print(f"🗑️ Deleted {path} after upload")
+                                except Exception as e:
+                                    print(f"Failed to upload/delete {camera_label}: {e}")
                 last_motion_time = now
     except Exception as e:
         print(f"Monitor error: {e}")
