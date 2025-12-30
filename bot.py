@@ -79,16 +79,19 @@ def find_working_cameras(max_index=4, timeout=1.0):
     return working
 
 # Video recording function - records from both cameras
-async def record_video_dual(duration=5, fps=15):
-    """Record from both cameras simultaneously and return both video paths"""
-    print(f"🎥 Recording {duration}s from both cameras at {fps} fps...")
+async def record_video_dual(outside_duration=30, inside_duration=30, fps=15):
+    """Record from both cameras with separate durations"""
+    print(f"Recording outside-camera: {outside_duration}s, inside-camera: {inside_duration}s at {fps} fps...")
     
     video_paths = {}
     
     for camera_label, camera_idx in CAMERA_INDEXES.items():
+        # Set duration based on camera
+        duration = outside_duration if camera_label == "outside-camera" else inside_duration
+        
         cap = cv2.VideoCapture(camera_idx)
         if not cap.isOpened():
-            print(f"❌ Cannot open {camera_label} (index {camera_idx})")
+            print(f"ERROR: Cannot open {camera_label} (index {camera_idx})")
             continue
 
         width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)) or 640
@@ -111,7 +114,7 @@ async def record_video_dual(duration=5, fps=15):
             out = cv2.VideoWriter(avi_path, fourcc, float(fps), (width, height))
             out_path = avi_path
             if not out.isOpened():
-                print(f"❌ VideoWriter failed for {camera_label}")
+                print(f"ERROR: VideoWriter failed for {camera_label}")
                 cap.release()
                 continue
 
@@ -121,14 +124,14 @@ async def record_video_dual(duration=5, fps=15):
         while time.time() - start < duration:
             ret, frame = cap.read()
             if not ret or frame is None:
-                print(f"❌ Failed to read frame from {camera_label}")
+                print(f"ERROR: Failed to read frame from {camera_label}")
                 break
             out.write(frame)
             frames += 1
         
         cap.release()
         out.release()
-        print(f"✅ Saved {camera_label}: {out_path} ({frames} frames)")
+        print(f"Saved {camera_label}: {out_path} ({frames} frames, {duration}s)")
         video_paths[camera_label] = out_path
 
     return video_paths if video_paths else None
@@ -167,7 +170,7 @@ async def on_ready():
     print(f"{bot.user} connected")
     if not package_monitor.is_running():
         package_monitor.start()
-        print("🔄 Package monitoring loop started")
+        print("Package monitoring loop started")
 
 @bot.event
 async def on_message(message):
@@ -195,18 +198,18 @@ async def info(ctx):
                 pv = pir.read()
             except Exception:
                 pv = getattr(pir, 'value', lambda: None)()
-            motion_state = "🚶 Motion" if pv == 1 else "😴 No Motion"
+            motion_state = "Motion" if pv == 1 else "No Motion"
         else:
-            motion_state = "😴 No Motion"
+            motion_state = "No Motion"
     except Exception:
         motion_state = "Unknown"
 
-    embed = discord.Embed(title="PackageBot", description="🔬 Current Sensor Readings", color=0x00ff00)
-    embed.add_field(name="🌡️ Temperature", value=f"{data['temperature']}°C", inline=False)
-    embed.add_field(name="💧 Humidity", value=f"{data['humidity']}%", inline=False)
-    embed.add_field(name="🌧️ Weather", value=f"{data['rain_status']}", inline=False)
-    embed.add_field(name="💧 Rain Value", value=str(data.get('rain_value', 0)), inline=False)
-    embed.add_field(name="� Motion", value=motion_state, inline=False)
+    embed = discord.Embed(title="PackageBot", description="Current Sensor Readings", color=0x00ff00)
+    embed.add_field(name="Temperature", value=f"{data['temperature']}°C", inline=False)
+    embed.add_field(name="Humidity", value=f"{data['humidity']}%", inline=False)
+    embed.add_field(name="Weather", value=f"{data['rain_status']}", inline=False)
+    embed.add_field(name="Rain Value", value=str(data.get('rain_value', 0)), inline=False)
+    embed.add_field(name="Motion", value=motion_state, inline=False)
     await ctx.send(embed=embed)
 
 @bot.command(name='say')
@@ -225,40 +228,40 @@ async def sensors_cmd(ctx):
 @bot.command(name='testvideo')
 async def testvideo(ctx):
     if not SENSORS_AVAILABLE:
-        await ctx.send("❌ Sensors not available")
+        await ctx.send("ERROR: Sensors not available")
         return
-    await ctx.send("🎥 Recording 5s test video from both cameras...")
-    video_paths = await record_video_dual(5)
+    await ctx.send("Recording 30s test video from both cameras...")
+    video_paths = await record_video_dual(30)
     if video_paths:
         for camera_label, path in video_paths.items():
             if os.path.exists(path):
                 try:
                     with open(path, 'rb') as f:
-                        await ctx.send(f"✅ {camera_label} video:", file=discord.File(f, filename=os.path.basename(path)))
+                        await ctx.send(f"{camera_label} video:", file=discord.File(f, filename=os.path.basename(path)))
                     # Delete video after successful upload
                     os.remove(path)
-                    print(f"🗑️ Deleted {path} after upload")
+                    print(f"Deleted {path} after upload")
                 except Exception as e:
                     await ctx.send(f"Failed to send {camera_label} video: {e}")
             else:
-                await ctx.send(f"❌ {camera_label} video file not found")
+                await ctx.send(f"ERROR: {camera_label} video file not found")
     else:
-        await ctx.send("❌ Failed to record test videos")
+        await ctx.send("ERROR: Failed to record test videos")
 
 @bot.command(name='monitor')
 async def monitor_cmd(ctx, action: str = 'status'):
     global monitoring_active, MONITORING_CHANNEL_ID
     if action == 'start':
         if not SENSORS_AVAILABLE:
-            await ctx.send("❌ Sensors not available")
+            await ctx.send("ERROR: Sensors not available")
             return
         monitoring_active = True
         MONITORING_CHANNEL_ID = ctx.channel.id
-        await ctx.send("📦 Monitoring started in this channel")
+        await ctx.send("Monitoring started in this channel")
     elif action == 'stop':
         monitoring_active = False
         MONITORING_CHANNEL_ID = None
-        await ctx.send("📦 Monitoring stopped")
+        await ctx.send("Monitoring stopped")
     else:
         await ctx.send(f"Monitoring: {'active' if monitoring_active else 'inactive'}")
 
@@ -282,14 +285,14 @@ async def package_monitor():
             if now - last_motion_time > cooldown_period:
                 timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 data = get_sensor_data()
-                video_paths = await record_video_dual(10, fps=15)
+                video_paths = await record_video_dual(outside_duration=30, inside_duration=30, fps=15)
                 # send to channel
                 ch = bot.get_channel(MONITORING_CHANNEL_ID)
                 if ch:
-                    embed = discord.Embed(title='📦 Package Delivery', description=f'Motion detected at {timestamp}', color=0x00ff00)
-                    embed.add_field(name='🌡️ Temp', value=f"{data['temperature']}°C", inline=True)
-                    embed.add_field(name='💧 Humidity', value=f"{data['humidity']}%", inline=True)
-                    embed.add_field(name='🌧️ Weather', value=data['rain_status'], inline=True)
+                    embed = discord.Embed(title='Package Delivery', description=f'Motion detected at {timestamp}', color=0x00ff00)
+                    embed.add_field(name='Temp', value=f"{data['temperature']}°C", inline=True)
+                    embed.add_field(name='Humidity', value=f"{data['humidity']}%", inline=True)
+                    embed.add_field(name='Weather', value=data['rain_status'], inline=True)
                     await ch.send(embed=embed)
                     # Send both videos and delete after upload
                     if video_paths:
@@ -297,10 +300,10 @@ async def package_monitor():
                             if os.path.exists(path):
                                 try:
                                     with open(path, 'rb') as f:
-                                        await ch.send(f"📹 {camera_label}:", file=discord.File(f, filename=os.path.basename(path)))
+                                        await ch.send(f"{camera_label}:", file=discord.File(f, filename=os.path.basename(path)))
                                     # Delete video after successful upload
                                     os.remove(path)
-                                    print(f"🗑️ Deleted {path} after upload")
+                                    print(f"Deleted {path} after upload")
                                 except Exception as e:
                                     print(f"Failed to upload/delete {camera_label}: {e}")
                 last_motion_time = now
