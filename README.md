@@ -58,35 +58,6 @@ A smart package delivery monitoring system built with Python, Discord.py, and Ra
 3. **Sensor Data** - Collects temperature, humidity, and weather conditions
 4. **Discord Upload** - Sends an embed with sensor data plus both video files to your Discord channel
 
-## 📁 Project Structure
-
-```
-PackageBot/
-├── bot.py                 # Main Discord bot with dual camera support
-├── package_monitor.py     # Standalone monitoring script (legacy)
-├── config.py             # Configuration file
-├── requirements.txt      # Python dependencies
-├── .env                  # Environment variables (not tracked)
-├── .env.example          # Example environment file
-└── README.md             # This file
-```
-
-## 🎓 Learning Journey
-
-This project combines:
-- Discord bot development with async programming
-- Computer vision and multi-camera recording
-- IoT sensor integration on Raspberry Pi
-- Real-time monitoring systems
-- Git and version control
-
-## 📝 Project Notes
-
-**Recent Updates:**
-- ✅ Dual camera system implementation (Nov 2024)
-- ✅ Grove sensor integration (DHT11, PIR, Rain sensor)
-- ✅ Async video recording from multiple cameras
-- ✅ Enhanced Discord embeds with sensor data
 
 ## 📚 Resources
 
@@ -109,4 +80,3 @@ Sensor pins:
 ---
 
 *Student Project - Fall 2025*
-*Built with 🤖 for learning IoT, computer vision, and bot development with discord client*
