@@ -46,7 +46,7 @@ A smart package delivery monitoring system built with Python, Discord.py, and Ra
 
 ## 📦 Installation
 
--Coming soon
+-Coming soon (never)
 
 
 ## 🎥 How It Works
